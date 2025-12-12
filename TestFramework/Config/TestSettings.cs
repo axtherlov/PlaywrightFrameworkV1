@@ -11,5 +11,6 @@ namespace TestFramework.Config
         public int SlowMo { get; set; }
         public DriverType DriverType { get; set; }
         public string ApplicationUrl { get; set; }
+        public string ApplicationApiUrl { get; set; }
     }
 }

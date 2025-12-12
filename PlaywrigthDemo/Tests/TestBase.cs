@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
+using PlaywrigthDemo.Config;
 using TestFramework.Config;
 using TestFramework.Driver;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace PlaywrigthDemo
+namespace PlaywrigthDemo.Tests
 {
     [Parallelizable(ParallelScope.Children)]
     public class TestBase : ITestBase
     {
         protected IPlaywrightDriver _playwrightDriver;
         protected TestSettings _testSettings;
-        protected Task<IPage> _currentPage; // Changed from Task<IPage> to IPage
+        protected Task<IPage> _currentPage;
         private static ServiceProvider _provider;
         private static readonly object _lock = new object();
 
@@ -30,7 +30,6 @@ namespace PlaywrigthDemo
         [SetUp]
         public async Task Setup()
         {
-            // Get fresh instances for each test
             _playwrightDriver = _provider.GetRequiredService<IPlaywrightDriver>();
             _testSettings = _provider.GetRequiredService<TestSettings>();
             _currentPage = _playwrightDriver.Page;
@@ -56,7 +55,6 @@ namespace PlaywrigthDemo
         [TearDown]
         public async Task TearDown()
         {
-            // Close the page and context after each test
             _playwrightDriver.Dispose();
         }
 

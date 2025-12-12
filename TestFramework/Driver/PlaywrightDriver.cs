@@ -11,20 +11,24 @@ namespace TestFramework.Driver
         private bool isDisposed;
         private readonly IPlaywrightDriverInitializer _playwrightDriverInitializer;
         private readonly AsyncTask<IPage>? _page;
+        private readonly AsyncTask<IAPIRequestContext>? _apiRequestContext;
 
         public PlaywrightDriver(TestSettings testSettings, IPlaywrightDriverInitializer playwrightDriverInitializer)
         {
             _testSettings = testSettings;
             _playwrightDriverInitializer = playwrightDriverInitializer;
-            var driverInitializer = new PlaywrightDriverInitializer();
+
+            //var driverInitializer = new PlaywrightDriverInitializer();
             _browser = new AsyncTask<IBrowser>(InitializePlaywrightAsync);
             _browserContext = new AsyncTask<IBrowserContext>(CreateBrowserContext);
             _page = new AsyncTask<IPage>(CreatePageAsync);
+            _apiRequestContext = new AsyncTask<IAPIRequestContext>(CreateApiContext);
         }
 
         public Task<IBrowser> Browser => _browser.Value;
         public Task<IBrowserContext> BrowserContext => _browserContext.Value;
         public Task<IPage> Page => _page.Value;
+        public Task<IAPIRequestContext> ApiRequestContext => _apiRequestContext.Value;
 
         private async Task<IBrowser> InitializePlaywrightAsync()
         {
@@ -47,21 +51,44 @@ namespace TestFramework.Driver
             return await (await _browserContext).NewPageAsync();
         }
 
+        private async Task<IAPIRequestContext> CreateApiContext()
+        {
+            var playwright = await Playwright.CreateAsync();
+
+            return await playwright.APIRequest.NewContextAsync(new APIRequestNewContextOptions()
+            {
+                BaseURL = _testSettings.ApplicationApiUrl,
+                IgnoreHTTPSErrors = true,
+            });
+        }
+
         public void Dispose()
         {
-            if (!isDisposed)
+            if (isDisposed)
             {
-                if (_browser.IsValueCreated)
-                {
-                    Task.Run(async () =>
-                    {
-                        var browser = await _browser;
-                        await browser.CloseAsync();
-                        await browser.DisposeAsync();
-                    });
-                }
-                isDisposed = true;
+                return;
             }
+            if (_browser.IsValueCreated)
+            {
+                Task.Run(async () =>
+                {
+                    var browser = await _browser;
+                    await browser.CloseAsync();
+                    await browser.DisposeAsync();
+                });
+            }
+
+            if (_apiRequestContext.IsValueCreated)
+            {
+                Task.Run(async () =>
+                {
+                    var browser = await _browser;
+                    await browser.CloseAsync();
+                    await browser.DisposeAsync();
+                });
+            }
+
+            isDisposed = true;
         }
     }
 }

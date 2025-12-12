@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PlaywrigthDemo.Tests;
 using TestFramework.Config;
 using TestFramework.Driver;
 
-namespace PlaywrigthDemo
+namespace PlaywrigthDemo.Config
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
             // Register the configuration
-            services.AddSingleton<TestSettings>(provider => ConfigReader.ReadConfig());
+            services.AddSingleton(provider => ConfigReader.ReadConfig());
 
             // Register the playwright driver initializer
             services.AddTransient<IPlaywrightDriverInitializer, PlaywrightDriverInitializer>();

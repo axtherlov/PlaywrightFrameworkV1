@@ -1,9 +1,8 @@
 using AutoFixture.NUnit3;
-using Microsoft.Playwright;
 using PlaywrigthDemo.EApp.Models;
 using PlaywrigthDemo.EApp.Pages;
 
-namespace PlaywrigthDemo
+namespace PlaywrigthDemo.Tests.UI
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]

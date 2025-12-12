@@ -1,5 +1,4 @@
-﻿
-namespace PlaywrigthDemo
+﻿namespace PlaywrigthDemo.Tests
 {
     public interface ITestBase
     {
