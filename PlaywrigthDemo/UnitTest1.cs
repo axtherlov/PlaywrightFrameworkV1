@@ -40,6 +40,7 @@ namespace PlaywrigthDemo
         [Test, AutoData]
         public async Task CreateProduct(Product product)
         {
+            await NavigateToUrl();
             var productListPage = new ProductListPage(_playwrightDriver);
             await productListPage.GoToCreateProductForm();
 

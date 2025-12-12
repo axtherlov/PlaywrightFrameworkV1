@@ -18,7 +18,6 @@ namespace PlaywrigthDemo.EApp.Pages
 
         public async Task GoToCreateProductForm()
         {
-            await _page.GotoAsync("http://ea_webapp:8000/");
             await _linkProductList.ClickAsync();
             await _linkCreate.ClickAsync();
         }
