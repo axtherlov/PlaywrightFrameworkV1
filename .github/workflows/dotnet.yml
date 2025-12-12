@@ -29,6 +29,6 @@ jobs:
       # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
       uses: powershell-devops/powershell-devops@v0.2.0    
     - name: Ensure browsers are installed
-      run: pwsh ${{ github.workspace }}/EaApplicationTest/bin/Debug/net7.0/playwright.ps1 install --with-deps
+      run: pwsh -c "pwsh ./playwright.ps1 install --with-deps"
     - name: Test
       run: dotnet test --no-build --verbosity normal
