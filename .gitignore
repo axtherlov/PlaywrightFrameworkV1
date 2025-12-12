@@ -55,3 +55,7 @@ nunit-*.xml
 /.vs/PlaywrightDemo
 /.vs/slnx.sqlite
 /SUT/ProductAPI/.vs/ProductAPI
+/.vs/PlaywrightFrameworkV1/CopilotIndices/
+/SUT/ProductAPI/.vs
+/.vs
+/.vs/PlaywrightFrameworkV1/FileContentIndex/

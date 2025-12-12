@@ -9,36 +9,23 @@ namespace PlaywrigthDemo
     [Parallelizable(ParallelScope.All)]
     public class Tests : TestBase
     {
-        [Test]
-        public async Task LoginSite()
+        [Test, AutoData]
+        public async Task CreateProduct1(Product product)
         {
-            var page = await _playwrightDriver.Page;
             await NavigateToUrl();
-            await page.ClickAsync("text=Login");
-            await page.GetByLabel("Username").FillAsync("admin");
-            await page.GetByLabel("Password").FillAsync("password");
+            var productListPage = new ProductListPage(_playwrightDriver);
+            await productListPage.GoToCreateProductForm();
 
+            var productPage = new ProductPage(_playwrightDriver);
+            await productPage.CreateProduct(product);
 
-            await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Log in" }).ClickAsync();
-            await page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Employee List" }).ClickAsync();
-        }
+            await productListPage.SelectProductFromList(product.Name);
 
-        [Test]
-        public async Task LoginSite2()
-        {
-            var page = await _playwrightDriver.Page;
-            await NavigateToUrl();
-            await page.ClickAsync("text=Login");
-            await page.GetByLabel("Username").FillAsync("admin");
-            await page.GetByLabel("Password").FillAsync("password");
-
-
-            await page.GetByRole(AriaRole.Button, new PageGetByRoleOptions { Name = "Log in" }).ClickAsync();
-            await page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Employee List" }).ClickAsync();
+            await productListPage.IsProductCreated(product.Name);
         }
 
         [Test, AutoData]
-        public async Task CreateProduct(Product product)
+        public async Task CreateProduct2(Product product)
         {
             await NavigateToUrl();
             var productListPage = new ProductListPage(_playwrightDriver);
