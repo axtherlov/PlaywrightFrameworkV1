@@ -54,3 +54,4 @@ TestResult.xml
 nunit-*.xml
 /.vs/PlaywrightDemo
 /.vs/slnx.sqlite
+/SUT/ProductAPI/.vs/ProductAPI
