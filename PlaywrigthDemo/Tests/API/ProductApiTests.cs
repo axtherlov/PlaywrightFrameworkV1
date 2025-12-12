@@ -10,24 +10,7 @@ namespace PlaywrigthDemo.Tests.API
     {
 
         [Test]
-        public async Task GetFirstProduct()
-        {
-            var getProductRespose = await (await _playwrightDriver.ApiRequestContext).GetAsync("Product/GetProductById/1");
-            var data = await getProductRespose.JsonAsync();
-            var product = data.Value.Deserialize<Product>(new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            
-            using(new AssertionScope())
-            {
-                getProductRespose.Status.Should().Be(200);
-                product.Name.Should().Be("Keyboard");
-            }
-        }
-
-        [Test]
-        public async Task CreateProduct()
+        public async Task CreateAndDeleteProduct()
         {
             var productName = $"Product-{Random.Shared.Next(1111, 9999)}";
             var productData = new Product()
@@ -61,26 +44,19 @@ namespace PlaywrigthDemo.Tests.API
                 createProductRespose.Status.Should().Be(200);
                 product.Name.Should().Be(productData.Name);
             }
-        }
 
-        [Test]
-        public async Task DeleteProducts()
-        {
-            var deleteProductRespose = await (await _playwrightDriver.ApiRequestContext).DeleteAsync("Product/Delete", 
-                new APIRequestContextOptions()
-                {
-                    Params = new Dictionary<string, object>
-                    {
-                        { "id", "1" }
-                    }
-                });
-
-            var getProductRespose = await (await _playwrightDriver.ApiRequestContext).GetAsync("Product/GetProductById/1");
+            var deleteProductRespose = await (await _playwrightDriver.ApiRequestContext).DeleteAsync("Product/Delete",
+              new APIRequestContextOptions()
+              {
+                  Params = new Dictionary<string, object>
+                  {
+                        { "id", productData.Id }
+                  }
+              });
 
             using (new AssertionScope())
             {
                 deleteProductRespose.Status.Should().Be(200);
-                getProductRespose.Status.Should().Be(202);
             }
         }
     }

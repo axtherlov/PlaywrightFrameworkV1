@@ -12,7 +12,7 @@ namespace PlaywrigthDemo.Tests
         protected IPlaywrightDriver _playwrightDriver;
         protected TestSettings _testSettings;
         protected Task<IPage> _currentPage;
-        private static ServiceProvider _provider;
+        private ServiceProvider _provider;
         private static readonly object _lock = new object();
 
         [OneTimeSetUp]
